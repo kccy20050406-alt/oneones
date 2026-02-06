@@ -19,12 +19,93 @@ const progressData = loadProgress();
 const cards = dataset
 	.sort((a, b) => {
 		// Put cards without a dueDate at the last
-		const dateA = progressData[a.id]?.dueDate ? new Date(progressData[a.id].dueDate) : Infinity;
-		const dateB = progressData[b.id]?.dueDate ? new Date(progressData[b.id].dueDate) : Infinity;
+		const dateA = progressData[a.ID]?.dueDate ? new Date(progressData[a.ID].dueDate) : Infinity;
+		const dateB = progressData[b.ID]?.dueDate ? new Date(progressData[b.ID].dueDate) : Infinity;
 		return dateA - dateB;
 	});
 
 let currentIndex = 0;
+
+const cardColorClasses = [
+	"card-color-pink",
+	"card-color-yellow",
+	"card-color-blue",
+	"card-color-purple",
+	"card-color-orange",
+];
+
+const detailEmojiPool = [
+	"🌟",
+	"🌼",
+	"🍀",
+	"🎈",
+	"🐣",
+	"🍭",
+	"✨",
+	"😺",
+	"📘",
+	"🧠",
+	"🎉",
+	"🫶",
+];
+
+const sparkleEmojiPool = [
+	"🌸",
+	"💐",
+	"💖",
+	"🌺",
+	"🪷",
+	"🦋",
+	"💞",
+	"⭐",
+];
+
+const cardFrontFace = document.querySelector(".card-front");
+const cardBackFace = document.querySelector(".card-back");
+const cardSparkles = document.querySelectorAll(".card-sparkle");
+const idiomElement = document.getElementById("idiom");
+const idiomHighlightClasses = [
+	"idiom-highlight-punch",
+	"idiom-highlight-sun",
+	"idiom-highlight-sea",
+	"idiom-highlight-lilac",
+	"idiom-highlight-mint",
+];
+
+function applyRandomCardColor() {
+	if (!cardFrontFace || !cardBackFace) return;
+	const nextColorClass = cardColorClasses[Math.floor(Math.random() * cardColorClasses.length)];
+	for (const face of [cardFrontFace, cardBackFace]) {
+		face.classList.remove(...cardColorClasses);
+		face.classList.add(nextColorClass);
+	}
+}
+
+function getRandomDetailEmoji() {
+	return detailEmojiPool[Math.floor(Math.random() * detailEmojiPool.length)];
+}
+
+function setBackDetailText(elementId, value) {
+	const element = document.getElementById(elementId);
+	if (!element) return;
+	const displayedValue = value ?? "";
+	element.textContent = displayedValue ? `${getRandomDetailEmoji()} ${displayedValue}` : "";
+}
+
+function refreshSparkles() {
+	for (const sparkle of cardSparkles) {
+		sparkle.textContent = sparkleEmojiPool[Math.floor(Math.random() * sparkleEmojiPool.length)];
+		sparkle.style.animationDelay = `${Math.random() * 2}s`;
+		sparkle.style.animationDuration = `${5 + Math.random() * 2.5}s`;
+	}
+}
+
+function applyIdiomHighlight() {
+	if (!idiomElement) return;
+	const nextHighlight = idiomHighlightClasses[Math.floor(Math.random() * idiomHighlightClasses.length)];
+	idiomElement.classList.remove(...idiomHighlightClasses);
+	idiomElement.classList.add(nextHighlight);
+}
 
 /** Creates a table row for each card, allowing quick navigation. */
 function initEntries() {
@@ -36,11 +117,11 @@ function initEntries() {
 			renderCard();
 		});
 		const cellId = document.createElement("td");
-		cellId.textContent = card.id;
+		cellId.textContent = card.ID;
 		const cellWord = document.createElement("td");
-		cellWord.textContent = card.word;
+		cellWord.textContent = card.Idiom;
 		const cellDue = document.createElement("td");
-		cellDue.textContent = progressData[card.id]?.dueDate ?? "Unseen"; // If the card has not been learnt before, mark it as "Unseen"
+		cellDue.textContent = progressData[card.ID]?.dueDate ?? "Unseen"; // If the card has not been learnt before, mark it as "Unseen"
 
 		row.appendChild(cellId);
 		row.appendChild(cellWord);
@@ -57,7 +138,7 @@ function updateEntries() {
 		row.classList.toggle("row-highlight", index === currentIndex);
 
 		const cellDue = row.children[row.childElementCount - 1];
-		const dueDateString = progressData[card.id]?.dueDate;
+		const dueDateString = progressData[card.ID]?.dueDate;
 		if (dueDateString) {
 			cellDue.textContent = dueDateString;
 			// If the due date is earlier than today, mark it as overdue
@@ -70,18 +151,6 @@ function updateEntries() {
 		}
 	}
 }
-
-/**
- * Mapping between abbreviated and full forms of parts of speech.
- * You can use the same technique to transform your data.
- */
-const posMapping = {
-	n: "noun",
-	v: "verb",
-	adj: "adjective",
-	adv: "adverb",
-	// Add more mappings as needed
-};
 
 const transitionHalfDuration = parseFloat(getComputedStyle(document.getElementById("card-inner")).transitionDuration) * 1000 / 2;
 
@@ -96,15 +165,28 @@ function renderCard() {
 
 	// Update the front side with the current card's word
 	const currentCard = cards[currentIndex];
-	document.getElementById("card-front-word").textContent = currentCard.word;
+	applyRandomCardColor();
+	refreshSparkles();
+	if (idiomElement) {
+		idiomElement.textContent = `${currentCard.Idiom} ${currentCard.Emoji || ""}`.trim();
+	}
+	applyIdiomHighlight();
+	document.getElementById("category").textContent = currentCard.Category;
+	
+	const levelStars = { "Easy": "⭐", "Medium": "⭐⭐", "Hard": "⭐⭐⭐" };
+	document.getElementById("level").textContent = levelStars[currentCard.Level] || currentCard.Level;
+
+	const frontImage = document.getElementById("card-front-image");
+	frontImage.src = currentCard.Image ?? "";
+	frontImage.hidden = !currentCard.Image;
+	document.getElementById("card-back-emoji").textContent = currentCard.Emoji || "🌈✨";
 
 	// Wait for the back side to become invisible before updating the content on the back side
 	setTimeout(() => {
-		document.getElementById("card-back-pos").textContent = posMapping[currentCard.pos] ?? currentCard.pos;
-		document.getElementById("card-back-definition").textContent = currentCard.definition;
-		document.getElementById("card-back-image").src = currentCard.image;
-		document.getElementById("card-back-audio").src = currentCard.audio;
-		document.getElementById("card-back-video").src = currentCard.video;
+		setBackDetailText("card-back-meaning", currentCard.Meaning);
+		setBackDetailText("card-back-example", currentCard["Business Example"]);
+		setBackDetailText("card-back-cantonese", currentCard["Cantonese Note"]);
+		setBackDetailText("card-back-related", currentCard["Related Idiom"]);
 	}, transitionHalfDuration);
 	// STUDENTS: End of recommended modifications
 
@@ -155,7 +237,7 @@ const dayOffset = { again: 1, good: 3, easy: 7 };
 function updateDueDate(type) {
 	const card = cards[currentIndex];
 	const today = new Date();
-	const dueDate = new Date(today.setDate(today.getDate() + dayOffset[type]) - today.getTimezoneOffset() * 60 * 1000);
+	const dueDate = newIDate(today.setDate(today.getDate() + dayOffset[type]) - today.getTimezoneOffset() * 60 * 1000);
 	(progressData[card.id] ??= {}).dueDate = dueDate.toISOString().split("T")[0]; // Print the date in YYYY-MM-DD format
 	saveProgress(progressData);
 	updateEntries();

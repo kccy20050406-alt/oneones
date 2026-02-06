@@ -274,29 +274,230 @@ main {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.card-color-pink {
+	background-color: #ffd6e7;
+}
+
+.card-color-yellow {
+	background-color: #fff0b3;
+}
+
+.card-color-blue {
+	background-color: #d6ebff;
+}
+
+.card-color-purple {
+	background-color: #e7ddff;
+}
+
+.card-color-orange {
+	background-color: #ffe3c4;
+}
+
 /* STUDENTS: Start of recommended modifications */
 /* You can alter colours, fonts, sizing, or layout for .card-front and .card-back below. */
 
 /* Styles for the front side of the card. */
 .card-front {
 	color: #11222d;
-	/* Additional styles here (e.g., background-color: #bbccdd;) */
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: center;
+	padding: 0; /* Remove padding to let image fill width if needed */
+	overflow: hidden;
 }
 
-/* Add styles for additional elements on the front side here. Here is an example: */
+.card-front-header {
+	flex: 1;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #f0f8ff;
+	border-bottom: 1px solid #eee;
+}
 
-#card-front-word {
+#card-front-image {
+	max-height: 50%;
+	max-width: 80%;
+	object-fit: contain;
+	margin: 1rem auto;
+}
+
+#idiom {
+	display: inline-block;
+	padding: 0.8rem 1.6rem;
+	border-radius: 999px;
+	font-size: clamp(2.1rem, 3.5vw, 3.3rem);
+	line-height: 1.2;
+	color: #1f1f1f;
+	box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+	transition: transform 0.4s ease, background 0.4s ease;
+}
+
+#idiom:hover {
+	transform: translateY(-4px) scale(1.02);
+}
+
+.idiom-highlight-punch {
+	background: linear-gradient(130deg, #ff9db5, #ffd1dc);
+}
+
+.idiom-highlight-sun {
+	background: linear-gradient(130deg, #ffe08a, #ffd15c);
+}
+
+.idiom-highlight-sea {
+	background: linear-gradient(130deg, #8fe1ff, #d0f4ff);
+}
+
+.idiom-highlight-lilac {
+	background: linear-gradient(130deg, #d8b4ff, #f0d9ff);
+}
+
+.idiom-highlight-mint {
+	background: linear-gradient(130deg, #c0ffd4, #f0fff2);
+}
+
+.card-meta {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	width: 100%;
+	padding: 1rem 0;
+	font-weight: bold;
+	color: #666;
+}
+
+.card-front-content {
+	padding: 1rem;
+	flex: 0 0 auto;
+}
+
+#card-front-idiom {
 	font-size: 200%;
+	text-transform: uppercase;
+	margin-bottom: 0.5rem;
+}
+
+.card-meta {
+	font-size: 0.9rem;
+	color: #555;
+	background: #f0f0f0;
+	padding: 0.5rem 1rem;
+	border-radius: 2rem;
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.card-front-footer {
+	padding: 1rem;
+	background-color: #fafafa;
+	border-top: 1px solid #eee;
+	font-size: 2rem;
+	width: 100%;
 }
 
 /* Styles for the back side of the card. */
+
 .card-back {
 	transform: rotateY(180deg);
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 1fr;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	text-align: left;
+	overflow: hidden;
+}
+
+.card-back-sparkles {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.card-sparkle {
+	position: absolute;
+	font-size: 1.5rem;
+	animation: sparkleFloat 6s ease-in-out infinite;
+	opacity: 0.85;
+}
+
+.card-sparkle:nth-child(1) { top: 10%; left: 5%; animation-duration: 5s; }
+.card-sparkle:nth-child(2) { top: 15%; right: 8%; animation-duration: 7s; }
+.card-sparkle:nth-child(3) { bottom: 20%; left: 12%; animation-duration: 6.5s; }
+.card-sparkle:nth-child(4) { bottom: 15%; right: 6%; animation-duration: 5.5s; }
+.card-sparkle:nth-child(5) { top: 40%; left: 2%; animation-duration: 6.8s; }
+.card-sparkle:nth-child(6) { top: 45%; right: 3%; animation-duration: 5.2s; }
+
+@keyframes sparkleFloat {
+	0% {
+		transform: translateY(0) rotate(0deg);
+	}
+	50% {
+		transform: translateY(-10px) rotate(5deg);
+	}
+	100% {
+		transform: translateY(0) rotate(-3deg);
+	}
+}
+
+.card-back-decor {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	gap: 0.5rem;
-	/* Additional styles here (e.g., background-color: #bbddcc;) */
+	padding: 0.5rem 1rem;
+	background: rgba(255, 255, 255, 0.35);
+	border-radius: 1rem;
+}
+
+.card-back-emoji {
+	font-size: 2rem;
+	filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.15));
+}
+
+.card-back-illustration {
+	width: 100%;
+	max-width: 200px;
+	height: auto;
+}
+
+.card-illustration-body {
+	fill: #fff4d3;
+	stroke: #ffb6c8;
+	stroke-width: 4;
+}
+
+.card-illustration-eye {
+	fill: #4a4a4a;
+}
+
+.card-illustration-smile {
+	fill: none;
+	stroke: #ff7f50;
+	stroke-width: 5;
+	stroke-linecap: round;
+}
+
+.card-illustration-sparkle {
+	fill: #9ad5ff;
+}
+
+.card-back-details {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+	gap: 0.75rem;
+}
+
+.card-back-details p {
+	margin: 0;
+	font-size: 1rem;
+	background: rgba(255, 255, 255, 0.45);
+	border-radius: 0.75rem;
+	padding: 0.75rem;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 /* Add styles for additional elements on the back side here. Here are some examples: */

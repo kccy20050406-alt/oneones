@@ -1,11 +1,13 @@
-id,word,pos,definition,image,audio,video
-1,hello,n,A phrase used for greeting someone.,./res/hello.png,./res/hello.wav,
-2,world,n,"The earth, together with all of its countries and peoples.",,./res/world.wav,
-3,multimedia,adj,Using more than one medium of expression.,,./res/multimedia.wav,./res/multimedia.mp4
-4,computer,n,An electronic device for storing and processing data.,,,
-5,programming,n,The process of writing computer programs.,,,
-6,language,n,The method of human communication.,,,
-7,education,n,The process of receiving or giving systematic instruction.,,,
-8,instructor,n,A person who teaches something.,,,
-9,student,n,A person who is studying at a school or college.,,,
-10,university,n,An educational institution for higher learning.,,,
+ID,Idiom,Meaning,Business Example,Cantonese Note,Category,Level,Related Idiom,Emoji,Image
+1,Think outside the box,Think creatively,"""Think outside the box for new ideas.""",Different from Cantonese thinking,Creativity,Medium,Break the mold,🧠📦,res/Think-Outside-the-Box.png.webp
+2,Ballpark figure,Rough estimate,"""Give me a ballpark figure.""",Similar to 大約幾多,Numbers,Easy,Roughly,⚾📊,res/ballpark-figure.png
+3,Get the ball rolling,Start something,"""Let's get the ball rolling on the project.""",Like 開始做嘢,Action,Easy,Kick off,🏃‍♂️💨,res/get-the-ball-rolling.webp
+4,On the same page,Everyone agrees,"""Are we on the same page?""",Same as 同一頁上,Communication,Medium,Agree,📖🤝,res/on-the-same-page.png
+5,Touch base,Contact briefly,"""I'll touch base next week.""",No direct translation,Communication,Medium,Check in,📞👋,res/touch-base.jpg
+6,Cut corners,Do poorly to save,"""Don't cut corners on quality.""",Like 求求其其,Quality,Medium,Save time,✂️📉,res/cut-corners.webp
+7,Back to drawing board,Start over,"""Back to the drawing board.""",Like 重新嚟過,Problem-solving,Medium,Start over,🔙📝,res/back-to-drawing-board.jpg
+8,All eggs in one basket,Risk everything,"""Don't put all eggs in one basket.""",Similar to 孤注一擲,Risk,Easy,Diversify,🥚🧺,res/all-eggs-in-one-basket.webp
+9,Read between lines,Understand hidden meaning,"""Read between the lines of the email.""",Like 睇字裏行間,Communication,Hard,Hidden meaning,📖👀,res/read-between-lines.jpeg
+10,Break the ice,Make comfortable,"""Break the ice with a joke.""",Similar to 搞氣氛,Social,Easy,Warm up,❄️🔨,res/break-the-ice.webp
+11,Circle back,Return to topic later,"""Let's circle back to this.""",No direct equivalent,Meetings,Medium,Return to,🔄,res/circle-back.jpeg
+12,Move the needle,Make noticeable difference,"""This will move the needle.""",Important business term,Results,Medium,Make impact,📈💪,res/move-the-needle.webp

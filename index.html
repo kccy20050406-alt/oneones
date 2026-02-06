@@ -25,7 +25,7 @@
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>Word</th>
+								<th>Idiom</th>
 								<th>Due Date</th>
 							</tr>
 						</thead>
@@ -39,17 +39,39 @@
 					<!-- STUDENTS: Start of recommended modifications -->
 					<!-- Add and rearrange HTML elements inside .card-front and .card-back below. -->
 					<div class="card-face card-front">
-						<h2 id="card-front-word"></h2>
+						<div class="card-meta">
+							<p id="category"></p>
+							<p id="level"></p>
+						</div>
+						<img id="card-front-image" class="card-image" />
+						<h2 id="idiom"></h2>
 					</div>
 					<div class="card-face card-back">
-						<p>
-							<span id="card-back-pos"></span>
-							<span id="card-back-definition"></span>
-						</p>
-						<img id="card-back-image" />
-						<audio id="card-back-audio" controls></audio>
-						<video id="card-back-video" controls autoplay loop muted></video>
-						<!-- Remove the above attributes as needed. -->
+						<div class="card-back-sparkles" aria-hidden="true">
+							<span class="card-sparkle"></span>
+							<span class="card-sparkle"></span>
+							<span class="card-sparkle"></span>
+							<span class="card-sparkle"></span>
+							<span class="card-sparkle"></span>
+							<span class="card-sparkle"></span>
+						</div>
+						<div class="card-back-decor">
+							<div id="card-back-emoji" class="card-back-emoji" aria-live="polite"></div>
+							<svg class="card-back-illustration" viewBox="0 0 160 90" role="img" aria-label="Cheerful doodle">
+								<rect x="15" y="25" width="130" height="50" rx="20" class="card-illustration-body"></rect>
+								<circle cx="55" cy="50" r="12" class="card-illustration-eye"></circle>
+								<circle cx="105" cy="50" r="12" class="card-illustration-eye"></circle>
+								<path d="M55 65 Q80 80 105 65" class="card-illustration-smile"></path>
+								<circle cx="35" cy="35" r="6" class="card-illustration-sparkle"></circle>
+								<circle cx="125" cy="30" r="4" class="card-illustration-sparkle"></circle>
+							</svg>
+						</div>
+						<div class="card-back-details">
+							<p><strong>Meaning:</strong> <span id="card-back-meaning"></span></p>
+							<p><strong>Example:</strong> <span id="card-back-example"></span></p>
+							<p><strong>Cantonese Note:</strong> <span id="card-back-cantonese"></span></p>
+							<p><strong>Related:</strong> <span id="card-back-related"></span></p>
+						</div>
 					</div>
 					<!-- STUDENTS: End of recommended modifications -->
 				</button>
