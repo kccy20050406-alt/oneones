@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register Roulette</title>
+  <style>
+    :root {
+      --bg: #0f1424;
+      --panel: rgba(21, 28, 50, 0.85);
+      --panel-2: rgba(27, 36, 64, 0.85);
+      --accent: #00f0ff;
+      --accent-2: #ff47e2;
+      --danger: #ff4757;
+      --text: #ffffff;
+      --muted: #a4b1cd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background-color: #0b101f;
+      background-image: radial-gradient(120% 120% at 30% 10%, #1d2948, #0f1424 50%, #0b101f 80%);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background-image 1.5s ease-in-out;
+      color: var(--text);
+      min-height: 100vh;
+    }
+    .shell {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      gap: 16px;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .title {
+      font-weight: 800;
+      font-size: 28px;
+      background: linear-gradient(135deg, #00f0ff, #7ab7ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+    }
+    .status {
+      background: rgba(21, 28, 50, 0.8);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      padding: 10px 18px;
+      border-radius: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.1);
+    }
+    .status strong { color: var(--accent); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: var(--panel);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    .goal {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 5px rgba(0, 240, 255, 0.5);
+      letter-spacing: 0.5px;
+    }
+    .target {
+      color: #e2e8f0;
+      font-weight: 500;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #7ab7ff, #ff47e2);
+      color: #fff;
+      font-weight: 600;
+      font-size: 12px;
+      margin-left: 6px;
+      box-shadow: 0 2px 8px rgba(255, 71, 226, 0.4);
+    }
+
+    .bank, .builder {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-height: 64px;
+      padding: 12px;
+      border-radius: 12px;
+      background: var(--panel-2);
+      border: 1px dashed rgba(0, 240, 255, 0.4);
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .fragment {
+      padding: 8px 12px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #223055, #1b2646);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .fragment:hover {
+      background: linear-gradient(145deg, #00f0ff, #0088ff);
+      color: #000;
+      border-color: #ffffff;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 5px 15px rgba(0, 240, 255, 0.5);
+    }
+    .fragment:disabled,
+    .fragment.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+      filter: grayscale(1);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #000;
+      background: linear-gradient(135deg, var(--accent), #e7f0ff);
+      box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 240, 255, 0.6);
+    }
+    button.secondary {
+      background: linear-gradient(135deg, #2b3c66, #1b2440);
+      color: var(--text);
+      border: 1px solid rgba(124, 242, 156, 0.3);
+      box-shadow: none;
+    }
+    button.secondary:hover {
+      background: linear-gradient(135deg, #3a4f85, #263255);
+      box-shadow: 0 4px 15px rgba(124, 242, 156, 0.2);
+    }
+
+    .message {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #1b2440;
+      border: 1px solid #2c3a64;
+      color: var(--muted);
+      min-height: 42px;
+    }
+    .message.success { border-color: #2e7d4f; color: var(--accent); }
+    .message.fail { border-color: #7a2e2e; color: var(--danger); }
+
+    .chat {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      background: #141c33;
+      border: 1px solid #263255;
+      min-height: 72px;
+    }
+    .bubble {
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #1f2b4e;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .bubble.npc { border-left: 3px solid var(--accent-2); }
+    .bubble.player { border-left: 3px solid var(--accent); }
+
+    .legend {
+      display: grid;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Start Screen Overlay -->
+  <div id="startScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(120% 120% at 30% 10%, #1d2948, #0f1424 50%, #0b101f 80%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center;">
+    <h1 style="font-size: 54px; margin-bottom: 10px; color: var(--accent);">Register Roulette</h1>
+    <h2 style="font-size: 28px; font-weight: normal; color: var(--text); margin-bottom: 20px;">Are you ready?</h2>
+    
+    <div style="background: rgba(15, 20, 36, 0.8); border: 1px solid var(--border); border-radius: 12px; padding: 25px 40px; margin-bottom: 40px; text-align: left; max-width: 600px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);">
+      <h3 style="color: var(--accent); margin-top: 0; margin-bottom: 15px; font-size: 22px; text-align: center; border-bottom: 1px solid var(--panel-2); padding-bottom: 10px;">📋 How to Play</h3>
+      <ul style="color: var(--text); font-size: 16px; line-height: 1.8; margin: 0; padding-left: 20px;">
+        <li><strong>Analyze:</strong> Read the scenario and match the target <strong>Register</strong> (Formality).</li>
+        <li><strong>Constraint:</strong> Pick exactly <strong>2 to 3 fragments</strong>. You can only use each fragment once!</li>
+        <li><strong>Timer:</strong> You have <strong>60 seconds</strong> per level. Think carefully but quickly.</li>
+        <li><strong>Survival:</strong> Wrong answers cost you points. Don't let your <strong>Social Status</strong> hit 0!</li>
+      </ul>
+    </div>
+
+    <p style="color: var(--muted); font-size: 18px; padding: 12px 24px; border: 1px dashed #2c3a64; border-radius: 10px; background: var(--panel-2);">
+      Press <strong>SPACEBAR</strong> to start
+    </p>
+  </div>
+
+  <!-- Game Over Screen Overlay -->
+  <div id="gameOverScreen" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 16, 31, 0.95); flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center; backdrop-filter: blur(5px);">
+    <h1 style="font-size: 64px; margin-bottom: 10px; color: var(--danger);">GAME OVER</h1>
+    <h2 style="font-size: 24px; font-weight: normal; color: var(--text); margin-bottom: 40px;">Your Social Status dropped to 0!</h2>
+    <button id="restartBtn" style="padding: 16px 32px; font-size: 20px; border-radius: 12px; background: var(--accent); color: #0b101f; border: none; cursor: pointer; font-weight: bold; transition: transform 0.2s;">
+      Try Again
+    </button>
+  </div>
+
+  <!-- Background Music Audio Tag -->
+  <audio id="bgMusic" loop>
+    <source src="sounds/bgm.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="shell">
+    <header>
+      <div class="title">Register Roulette</div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <button id="musicToggleBtn" class="secondary" style="padding: 6px 12px; font-size: 14px;">🎵 Play Music</button>
+        <div class="status">
+          ⏱ Time: <strong id="timerValue" style="color: #ffb84d; margin-left: 4px;">60</strong>s
+        </div>
+        <div class="status">
+          Social Status: <strong id="statusValue">100</strong>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="goal" id="goalText">Goal</div>
+        <div class="target" id="targetText">Target</div>
+        <div class="builder" id="builder"></div>
+        <div class="actions">
+          <button id="submitBtn">Submit</button>
+          <button id="nextBtn" class="secondary">Next Round</button>
+          <button id="clearBtn" class="secondary">Clear</button>
+        </div>
+        <div class="message" id="message">Pick fragments to build a response that fits the register.</div>
+      </section>
+
+      <section class="card">
+        <div class="goal">Word Bank</div>
+        <div class="bank" id="bank"></div>
+        <div class="legend">
+          <div id="dynamicTip">Tip: Use fragments that match the target register (or neutral).</div>
+          <div id="dynamicConflict">Conflict: slang/blunt with formal or polite-professional.</div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Virtual Character Section at the Bottom -->
+    <section class="card" style="display: flex; gap: 16px; align-items: flex-start;">
+      <img id="npcAvatar" src="images/image%201.png" alt="Avatar" style="background: #263255; border-radius: 50%; width: 80px; height: 80px; object-fit: cover; flex-shrink: 0;" />
+      <div style="flex-grow: 1;">
+        <div class="goal" id="npcName" style="color: var(--accent-2); margin-bottom: 4px;">Character Name</div>
+        <div id="npcRole" style="font-size: 14px; color: var(--muted); margin-bottom: 12px;">Role</div>
+        <div class="chat" id="chat" style="margin-bottom: 0;"></div>
+      </div>
+    </section>
+
+    <!-- Correct Answer Display -->
+    <section class="card" id="correctAnswerBox" style="display: none; border-color: var(--danger); background: #2a1b24;">
+      <div class="goal" style="color: var(--danger);">👍 Suggested Perfect Output</div>
+      <div id="correctAnswerText" style="font-size: 16px; color: var(--text); padding-top: 8px; line-height: 1.5;"></div>
+    </section>
+  </div>
+
+  <script>
+    const scenarios = [
+      {
+        id: 1,
+        goal: 'Ask for a deadline extension',
+        targets: ['Strict Professor', 'Best Friend', 'New Coworker'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'I was hoping', register: 'polite_professional' },
+          { text: 'to request', register: 'formal' },
+          { text: 'an extension', register: 'formal' },
+          { text: 'on the assignment', register: 'formal' },
+          { text: 'because of', register: 'neutral' },
+          { text: 'a family situation', register: 'polite_professional' },
+          { text: 'could you please', register: 'polite_professional' },
+          { text: 'push it back a bit?', register: 'casual' },
+          { text: 'I messed up the timing', register: 'casual' },
+          { text: 'I apologize for the inconvenience', register: 'formal' },
+          { text: 'thanks a lot', register: 'casual' },
+          { text: 'I appreciate your understanding', register: 'polite_professional' }
+        ]
+      },
+      {
+        id: 2,
+        goal: 'Decline an invitation politely',
+        targets: ['Club President', 'Close Cousin', 'Community Mentor'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'Thank you for inviting me', register: 'formal' },
+          { text: 'I really appreciate it', register: 'polite_professional' },
+          { text: 'I can’t make it', register: 'neutral' },
+          { text: 'this time', register: 'neutral' },
+          { text: 'I already have plans', register: 'neutral' },
+          { text: 'maybe next time', register: 'casual' },
+          { text: 'I’m sorry', register: 'polite_professional' },
+          { text: 'gotta pass', register: 'slang' },
+          { text: 'I hope the event goes well', register: 'formal' },
+          { text: 'let’s catch up soon', register: 'casual' },
+          { text: 'I respectfully decline', register: 'formal' },
+          { text: 'thanks for thinking of me', register: 'polite_professional' }
+        ]
+      },
+      {
+        id: 3,
+        goal: 'Ask for help with a task',
+        targets: ['Team Leader', 'Roommate', 'Library Staff'],
+        target_registers: ['polite_professional', 'casual', 'formal'],
+        fragments: [
+          { text: 'Could you help me', register: 'polite_professional' },
+          { text: 'with this task', register: 'neutral' },
+          { text: 'when you have time', register: 'polite_professional' },
+          { text: 'I’m a bit stuck', register: 'neutral' },
+          { text: 'can you show me', register: 'casual' },
+          { text: 'real quick?', register: 'casual' },
+          { text: 'I would be grateful', register: 'formal' },
+          { text: 'if you could assist me', register: 'formal' },
+          { text: 'no worries if not', register: 'casual' },
+          { text: 'I appreciate your time', register: 'polite_professional' },
+          { text: 'please', register: 'formal' },
+          { text: 'thanks!', register: 'casual' }
+        ]
+      },
+      {
+        id: 4,
+        goal: 'Give feedback on a project',
+        targets: ['Senior Manager', 'Classmate', 'Volunteer Coordinator'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'The structure is clear', register: 'formal' },
+          { text: 'and the main point comes through', register: 'neutral' },
+          { text: 'I suggest', register: 'formal' },
+          { text: 'adding more examples', register: 'formal' },
+          { text: 'this part feels a little rushed', register: 'polite_professional' },
+          { text: 'maybe slow it down', register: 'casual' },
+          { text: 'overall it looks good', register: 'neutral' },
+          { text: 'nice work!', register: 'casual' },
+          { text: 'I appreciate the effort', register: 'polite_professional' },
+          { text: 'consider refining the conclusion', register: 'formal' },
+          { text: 'could be stronger', register: 'polite_professional' },
+          { text: 'keep it up', register: 'casual' }
+        ]
+      },
+      {
+        id: 5,
+        goal: 'Request a schedule change',
+        targets: ['Supervisor', 'Sibling', 'Trainer'],
+        target_registers: ['polite_professional', 'casual', 'formal'],
+        fragments: [
+          { text: 'I would like to request', register: 'formal' },
+          { text: 'a schedule adjustment', register: 'formal' },
+          { text: 'for next week', register: 'neutral' },
+          { text: 'if possible', register: 'polite_professional' },
+          { text: 'can we swap?', register: 'casual' },
+          { text: 'I have a conflict', register: 'neutral' },
+          { text: 'could we move it?', register: 'polite_professional' },
+          { text: 'I’d appreciate your flexibility', register: 'polite_professional' },
+          { text: 'no big deal if not', register: 'casual' },
+          { text: 'thank you for your consideration', register: 'formal' },
+          { text: 'let me know what works', register: 'neutral' },
+          { text: 'I really need this change', register: 'blunt' }
+        ]
+      },
+      {
+        id: 6,
+        goal: 'Ask for a recommendation',
+        targets: ['Department Chair', 'Older Cousin', 'Internship Mentor'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'Would you be willing', register: 'polite_professional' },
+          { text: 'to write a recommendation', register: 'formal' },
+          { text: 'for my application', register: 'formal' },
+          { text: 'I would be honored', register: 'formal' },
+          { text: 'if you could support me', register: 'polite_professional' },
+          { text: 'I learned a lot from you', register: 'polite_professional' },
+          { text: 'can you vouch for me?', register: 'casual' },
+          { text: 'pretty please', register: 'slang' },
+          { text: 'thank you for your time', register: 'formal' },
+          { text: 'it means a lot', register: 'casual' },
+          { text: 'I respect your opinion', register: 'formal' },
+          { text: 'I appreciate your guidance', register: 'polite_professional' }
+        ]
+      },
+      {
+        id: 7,
+        goal: 'Explain a mistake',
+        targets: ['Client', 'Teammate', 'Neighbor'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'I want to clarify', register: 'formal' },
+          { text: 'what went wrong', register: 'neutral' },
+          { text: 'I take responsibility', register: 'formal' },
+          { text: 'for the error', register: 'formal' },
+          { text: 'my bad', register: 'slang' },
+          { text: 'I messed up', register: 'casual' },
+          { text: 'here is what happened', register: 'neutral' },
+          { text: 'I apologize', register: 'polite_professional' },
+          { text: 'and I am fixing it', register: 'polite_professional' },
+          { text: 'thanks for understanding', register: 'casual' },
+          { text: 'please accept my apology', register: 'formal' },
+          { text: 'I appreciate your patience', register: 'polite_professional' }
+        ]
+      },
+      {
+        id: 8,
+        goal: 'Invite someone to join a group',
+        targets: ['Department Guest', 'Best Friend', 'Volunteer Leader'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'We would be delighted', register: 'formal' },
+          { text: 'to have you join us', register: 'formal' },
+          { text: 'for our group', register: 'neutral' },
+          { text: 'this weekend', register: 'neutral' },
+          { text: 'wanna join?', register: 'casual' },
+          { text: 'it’ll be fun', register: 'casual' },
+          { text: 'your participation would be valued', register: 'polite_professional' },
+          { text: 'please consider attending', register: 'formal' },
+          { text: 'we’d love to see you', register: 'casual' },
+          { text: 'let me know if you are interested', register: 'polite_professional' },
+          { text: 'you should totally come', register: 'slang' },
+          { text: 'thank you for considering it', register: 'polite_professional' }
+        ]
+      },
+      {
+        id: 9,
+        goal: 'Request feedback',
+        targets: ['Thesis Advisor', 'Study Buddy', 'Workshop Coach'],
+        target_registers: ['formal', 'casual', 'polite_professional'],
+        fragments: [
+          { text: 'Could you review', register: 'formal' },
+          { text: 'my draft', register: 'neutral' },
+          { text: 'when you have time?', register: 'polite_professional' },
+          { text: 'I value your feedback', register: 'formal' },
+          { text: 'can you take a look?', register: 'casual' },
+          { text: 'be honest', register: 'casual' },
+          { text: 'I would appreciate your insight', register: 'polite_professional' },
+          { text: 'thanks!', register: 'casual' },
+          { text: 'your comments would help a lot', register: 'polite_professional' },
+          { text: 'please be direct', register: 'formal' },
+          { text: 'give it to me straight', register: 'slang' },
+          { text: 'I respect your expertise', register: 'formal' }
+        ]
+      },
+      {
+        id: 10,
+        goal: 'Negotiate a price',
+        targets: ['Shop Manager', 'Friend', 'Marketplace Seller'],
+        target_registers: ['polite_professional', 'casual', 'formal'],
+        fragments: [
+          { text: 'Would you consider', register: 'polite_professional' },
+          { text: 'a slight discount', register: 'formal' },
+          { text: 'on this item', register: 'neutral' },
+          { text: 'if I pay today?', register: 'neutral' },
+          { text: 'can you do better?', register: 'casual' },
+          { text: 'that price is too high', register: 'blunt' },
+          { text: 'I respect your pricing', register: 'formal' },
+          { text: 'maybe we can meet in the middle', register: 'polite_professional' },
+          { text: 'help me out here', register: 'casual' },
+          { text: 'I would appreciate it', register: 'polite_professional' },
+          { text: 'please let me know', register: 'formal' },
+          { text: 'thanks for your time', register: 'formal' }
+        ]
+      }
+    ];
+
+    const statusValue = document.getElementById('statusValue');
+    const goalText = document.getElementById('goalText');
+    const targetText = document.getElementById('targetText');
+    const chat = document.getElementById('chat');
+    const bank = document.getElementById('bank');
+    const builder = document.getElementById('builder');
+    const submitBtn = document.getElementById('submitBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const npcAvatar = document.getElementById('npcAvatar');
+    const npcName = document.getElementById('npcName');
+    const npcRole = document.getElementById('npcRole');
+    const message = document.getElementById('message');
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const timerValue = document.getElementById('timerValue');
+    const correctAnswerBox = document.getElementById('correctAnswerBox');
+    const correctAnswerText = document.getElementById('correctAnswerText');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    const restartBtn = document.getElementById('restartBtn');
+    const dynamicTip = document.getElementById('dynamicTip');
+    const dynamicConflict = document.getElementById('dynamicConflict');
+
+    let socialStatus = 100;
+    let currentScenario = null;
+    let currentTargetIndex = 0;
+    let selected = [];
+    let currentNPC = null;
+    let timeLeft = 60;
+    let timerInterval = null;
+    
+    // JSON array of 5 distinct Virtual Characters
+    const npcs = [
+      { "id": "npc_1", "name": "Dr. Sterling", "role": "Sociolinguistics Expert", "avatar": "images/image 1.png", "tone": "formal" },
+      { "id": "npc_2", "name": "Jax", "role": "Slang Enthusiast", "avatar": "images/image 1.png", "tone": "casual" },
+      { "id": "npc_3", "name": "Ms. Vance", "role": "Corporate Director", "avatar": "images/image 1.png", "tone": "polite_professional" },
+      { "id": "npc_4", "name": "Granny Edna", "role": "Traditional Grandma", "avatar": "images/image 1.png", "tone": "polite_professional" },
+      { "id": "npc_5", "name": "Riley", "role": "Coffee Shop Barista", "avatar": "images/image 1.png", "tone": "casual" }
+    ];
+
+    // Background images corresponding to each scenario goal
+    const backgroundImages = {
+      1: 'url("https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=1920")', // Study/Deadline
+      2: 'url("https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&q=80&w=1920")', // Event/Invitation
+      3: 'url("https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1920")', // Office/Help
+      4: 'url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1920")', // Feedback/Meeting
+      5: 'url("https://images.unsplash.com/photo-1506784951206-b922d0eb4b82?auto=format&fit=crop&q=80&w=1920")', // Calendar/Schedule
+      6: 'url("https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1920")', // Recommendation/Mentor
+      7: 'url("https://images.unsplash.com/photo-1450257077977-cfc12f270275?auto=format&fit=crop&q=80&w=1920")', // Mistake/Apology
+      8: 'url("https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&q=80&w=1920")', // Join group/Meeting
+      9: 'url("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1920")', // Request feedback/Papers
+      10: 'url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=1920")' // Negotiate/Shop
+    };
+
+    function shuffle(arr) {
+      return arr.slice().sort(() => Math.random() - 0.5);
+    }
+
+    function loadRound() {
+      correctAnswerBox.style.display = 'none'; // Hide correct answer box on new round
+      currentScenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+      currentTargetIndex = Math.floor(Math.random() * currentScenario.targets.length);
+      
+      // Setup subtle contextual background image
+      const bgImg = backgroundImages[currentScenario.id];
+      if (bgImg) {
+        // Overlay a dark gradient on top of the image to keep it subtle and not distracting
+        document.body.style.backgroundImage = `radial-gradient(120% 120% at 30% 10%, rgba(29, 41, 72, 0.85), rgba(15, 20, 36, 0.9) 50%, rgba(11, 16, 31, 0.95) 80%), ${bgImg}`;
+      }
+
+      selected = [];
+      renderRound();
+      setMessage('Pick fragments to build a response that fits the register.', '');
+      renderNPCPrompt();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 60;
+      timerValue.textContent = timeLeft;
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerValue.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          handleTimeout();
+        }
+      }, 1000);
+    }
+
+    function updateScore(amount) {
+      socialStatus += amount;
+      if (socialStatus <= 0) {
+        socialStatus = 0;
+        statusValue.textContent = socialStatus;
+        triggerGameOver();
+        return;
+      }
+      statusValue.textContent = socialStatus;
+    }
+
+    function triggerGameOver() {
+      clearInterval(timerInterval);
+      gameOverScreen.style.display = 'flex';
+      // Make a sad final speech
+      const utterance = new SpeechSynthesisUtterance("Game over! Your social status dropped too low. Try again!");
+      utterance.pitch = 0.6;
+      utterance.rate = 0.9;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    restartBtn.addEventListener('click', () => {
+      socialStatus = 100;
+      statusValue.textContent = socialStatus;
+      gameOverScreen.style.display = 'none';
+      loadRound();
+    });
+
+    function handleTimeout() {
+      if (socialStatus <= 0) return; // Prevent double trigger
+      
+      setMessage("Time's up! You took longer than 1 minute.", 'fail');
+      
+      const timeoutPrompts = [
+        `Oops, you ran out of time!`,
+        `Oh no, time is up! You took a bit too long.`,
+        `Clock's ticking! You didn't finish in time.`
+      ];
+      addBubble('npc', timeoutPrompts[Math.floor(Math.random() * timeoutPrompts.length)]);
+      
+      showCorrectAnswer();
+      updateScore(-20);
+    }
+
+    function showCorrectAnswer() {
+      const register = currentScenario.target_registers[currentTargetIndex];
+      const validFragments = currentScenario.fragments.filter(f => f.register === register || f.register === 'neutral');
+      correctAnswerText.textContent = validFragments.map(f => f.text).join(' ');
+      correctAnswerBox.style.display = 'block';
+    }
+
+    function renderRound() {
+      const target = currentScenario.targets[currentTargetIndex];
+      const register = currentScenario.target_registers[currentTargetIndex];
+      goalText.textContent = currentScenario.goal;
+      targetText.innerHTML = `Target: <strong>${target}</strong> <span class="tag">${register}</span>`;
+
+      // Update the tips dynamically based on the current required register
+      if (register === 'formal') {
+        dynamicTip.textContent = "Tip: Choose polite, structured words suitable for a professional setting.";
+        dynamicConflict.textContent = "Conflict: Avoid using slang, abbreviations, or overly casual phrasing.";
+      } else if (register === 'casual') {
+        dynamicTip.textContent = "Tip: Keep it relaxed and friendly. Everyday words and short phrases work best.";
+        dynamicConflict.textContent = "Conflict: Avoid stiff, overly formal, or robotic academic language.";
+      } else if (register === 'polite_professional') {
+        dynamicTip.textContent = "Tip: Be courteous and respectful, but not overly stiff or academic.";
+        dynamicConflict.textContent = "Conflict: Avoid blunt internet slang or overly familiar greetings.";
+      } else {
+        dynamicTip.textContent = "Tip: Use fragments that match the target register (or neutral).";
+        dynamicConflict.textContent = "Conflict: Keep away from opposing tones.";
+      }
+
+      bank.innerHTML = '';
+      builder.innerHTML = '';
+
+      shuffle(currentScenario.fragments).forEach((frag, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'fragment';
+        btn.textContent = frag.text;
+        btn.dataset.id = `frag-${idx}`;
+        
+        // Pass the actual unique HTML ID along with the fragment so we know what to disable/enable
+        const fragData = { ...frag, uiId: `frag-${idx}` };
+
+        btn.addEventListener('click', () => {
+          if (!btn.disabled) {
+            addFragment(fragData);
+            btn.disabled = true;
+            btn.style.opacity = '0.4';
+            btn.style.cursor = 'not-allowed';
+          }
+        });
+        bank.appendChild(btn);
+      });
+
+      renderBuilder();
+    }
+
+    function renderNPCPrompt() {
+      // Stop any ongoing speech when a new round prompt appears
+      window.speechSynthesis.cancel();
+
+      currentNPC = npcs[Math.floor(Math.random() * npcs.length)];
+      const randomImageNum = Math.floor(Math.random() * 6) + 1;
+      const target = currentScenario.targets[currentTargetIndex];
+      chat.innerHTML = '';
+      
+      npcAvatar.src = `images/image ${randomImageNum}.png`;
+      npcName.textContent = currentNPC.name;
+      npcRole.textContent = currentNPC.role;
+
+      const goalStr = currentScenario.goal.toLowerCase();
+      const prompts = [
+        `Hey! You need to ${goalStr} to ${target}. How will you say it?`,
+        `Alright, let's practice. Your task is to ${goalStr} to ${target}. What's the best way to word this?`,
+        `Imagine you are talking to ${target}. You need to ${goalStr}. What should you say?`,
+        `Here's the situation: you must ${goalStr}, and you're speaking with ${target}. Choose your words carefully!`
+      ];
+      const chosenPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+      addBubble('npc', chosenPrompt);
+    }
+
+    function addBubble(who, text) {
+      const div = document.createElement('div');
+      div.className = `bubble ${who}`;
+      div.textContent = text;
+      chat.appendChild(div);
+
+      // Read text out loud only if it's the NPC speaking
+      if (who === 'npc') {
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Try to pick a more natural "Premium" or specific English voice if available
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.name.includes('Premium') || v.name.includes('Samantha') || v.name.includes('Google US')) || voices.find(v => v.lang.startsWith('en-'));
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
+        }
+
+        // Add "emotion" based on the context of the text
+        const isHappy = ['Great', 'Spot on', 'Excellent', 'Nailed'].some(w => text.includes(w));
+        const isSad = ['Oof', 'Oops', 'Not quite', 'Ah,', 'Oh no', 'Clock'].some(w => text.includes(w));
+        const isWelcome = ['Hey!', 'Alright', 'Imagine', 'Here\'s'].some(w => text.includes(w));
+
+        if (isHappy) {
+          // Happy & Excited
+          utterance.pitch = 1.4;
+          utterance.rate = 1.1; 
+        } else if (isSad) {
+          // Disappointed & Regretful
+          utterance.pitch = 0.8;
+          utterance.rate = 0.9;
+        } else if (isWelcome) {
+          // Welcoming & Inquisitive
+          utterance.pitch = 1.2;
+          utterance.rate = 1.05;
+        } else {
+          // Normal engaging
+          utterance.pitch = 1.1;
+          utterance.rate = 1.0;
+        }
+
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function addFragment(frag) {
+      selected.push(frag);
+      renderBuilder();
+    }
+
+    function removeFragment(idx) {
+      const removedFrag = selected[idx];
+      selected.splice(idx, 1);
+      
+      // Re-enable the button in the bank
+      const bankBtn = document.querySelector(`.bank .fragment[data-id="${removedFrag.uiId}"]`);
+      if (bankBtn) {
+        bankBtn.disabled = false;
+        bankBtn.style.opacity = '1';
+        bankBtn.style.cursor = 'pointer';
+      }
+
+      renderBuilder();
+    }
+
+    function renderBuilder() {
+      builder.innerHTML = '';
+      selected.forEach((frag, idx) => {
+        const chip = document.createElement('button');
+        chip.className = 'fragment';
+        chip.textContent = frag.text;
+        chip.addEventListener('click', () => removeFragment(idx));
+        builder.appendChild(chip);
+      });
+    }
+
+    function setMessage(text, type) {
+      message.textContent = text;
+      message.className = 'message ' + type;
+    }
+
+    function checkAnswer() {
+      if (timeLeft <= 0) {
+        setMessage("Time's up! Please click Next Round.", 'fail');
+        return;
+      }
+      if (selected.length === 0) {
+        setMessage('Pick at least one fragment before submitting.', 'fail');
+        return;
+      }
+      
+      clearInterval(timerInterval); // Stop timer on successful submit
+      addBubble('player', `You: ${selected.map(f => f.text).join(' ')}`);
+      const register = currentScenario.target_registers[currentTargetIndex];
+      const tags = selected.map(f => f.register);
+      const matchCount = tags.filter(t => t === register || t === 'neutral').length;
+      const conflict = hasConflict(register, tags);
+
+      // Rule: Must have 2 or 3 valid fragments, AND no conflicting fragments.
+      // E.g., if matchCount is 1, they fail. If matchCount is 4 or more, they might fail for being too wordy (using extra fragments).
+      if (!conflict && matchCount >= 2 && matchCount <= 3) {
+        updateScore(15);
+        if (socialStatus === 0) return; // Prevent extra logic if game over is somehow hit
+        setMessage('Success! Your register fits the target perfectly.', 'success');
+        
+        const successPrompts = [
+          `Great job! That sounds perfectly appropriate for a ${register} tone.`,
+          `Spot on! That's exactly how you use a ${register} register.`,
+          `Excellent choice of words! It fits the ${register} tone perfectly.`,
+          `Nailed it! That sentence completely matches a ${register} style.`
+        ];
+        addBubble('npc', successPrompts[Math.floor(Math.random() * successPrompts.length)]);
+      } else {
+        updateScore(-20);
+        if (socialStatus === 0) return; // Stop executing if game is over
+        
+        setMessage(explainFailure(register, tags), 'fail');
+        
+        const failPrompts = [
+          `Oof, that doesn't quite fit a ${register} tone. Try again!`,
+          `Not quite! We needed a ${register} tone for this situation. Let's look at the correct way.`,
+          `Ah, that phrasing clashes with a ${register} register. Here is a better option!`,
+          `That's a bit off for a ${register} context. Review the suggested output below!`
+        ];
+        addBubble('npc', failPrompts[Math.floor(Math.random() * failPrompts.length)]);
+        showCorrectAnswer();
+      }
+    }
+
+    function hasConflict(register, tags) {
+      const conflictMap = {
+        formal: ['slang', 'blunt', 'casual'],
+        casual: ['formal', 'academic', 'polite_professional'],
+        polite_professional: ['slang', 'blunt']
+      };
+      const conflicts = conflictMap[register] || [];
+      return tags.some(t => conflicts.includes(t));
+    }
+
+    function explainFailure(register, tags) {
+      if (hasConflict(register, tags)) {
+        return `Fail: You used a conflicting register for ${register}.`;
+      }
+      const matchCount = tags.filter(t => t === register || t === 'neutral').length;
+      if (matchCount < 2) {
+        return `Fail: You must select at least 2 correct fragments to score points.`;
+      }
+      if (matchCount > 3) {
+        return `Fail: You selected too many fragments (more than 3)! Keep it concise.`;
+      }
+      return `Fail: Not enough fragments matched the ${register} register.`;
+    }
+
+    submitBtn.addEventListener('click', checkAnswer);
+    nextBtn.addEventListener('click', loadRound);
+    clearBtn.addEventListener('click', () => { 
+      selected = []; 
+      renderBuilder(); 
+      // Re-enable all buttons in the bank
+      const bankBtns = document.querySelectorAll('.bank .fragment');
+      bankBtns.forEach(b => {
+        b.disabled = false;
+        b.style.opacity = '1';
+        b.style.cursor = 'pointer';
+      });
+    });
+
+    let isMusicPlaying = false;
+    bgMusic.volume = 0.15; // Set volume to very soft (15%)
+    
+    const startScreen = document.getElementById('startScreen');
+    let gameStarted = false;
+
+    // Load voices early so they are ready for the first speech
+    if (window.speechSynthesis.onvoiceschanged !== undefined) {
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+
+    // Start game and music when Spacebar is pressed
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && !gameStarted) {
+        e.preventDefault(); // Prevent page scroll
+        gameStarted = true;
+        
+        // Hide start screen smoothly (can just remove display)
+        startScreen.style.display = 'none';
+
+        // Start background music
+        bgMusic.play().then(() => {
+          isMusicPlaying = true;
+          musicToggleBtn.textContent = '⏸ Pause Music';
+        }).catch(e => {
+          console.error("Audio play failed:", e);
+        });
+
+        // Initialize the first round
+        loadRound();
+      }
+    });
+
+    musicToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); 
+      if (isMusicPlaying) {
+        bgMusic.pause();
+        musicToggleBtn.textContent = '🎵 Play Music';
+      } else {
+        bgMusic.play().catch(e => console.error("Audio play failed:", e));
+        musicToggleBtn.textContent = '⏸ Pause Music';
+      }
+      isMusicPlaying = !isMusicPlaying;
+    });
+
+  </script>
+</body>
+</html>

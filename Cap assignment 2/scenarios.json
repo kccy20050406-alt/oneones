@@ -1,0 +1,202 @@
+[
+  {
+    "id": 1,
+    "goal": "Ask for a deadline extension",
+    "targets": ["Strict Professor", "Best Friend", "New Coworker"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "I was hoping", "register": "polite_professional" },
+      { "text": "to request", "register": "formal" },
+      { "text": "an extension", "register": "formal" },
+      { "text": "on the assignment", "register": "formal" },
+      { "text": "because of", "register": "neutral" },
+      { "text": "a family situation", "register": "polite_professional" },
+      { "text": "could you please", "register": "polite_professional" },
+      { "text": "push it back a bit?", "register": "casual" },
+      { "text": "I messed up the timing", "register": "casual" },
+      { "text": "I apologize for the inconvenience", "register": "formal" },
+      { "text": "thanks a lot", "register": "casual" },
+      { "text": "I appreciate your understanding", "register": "polite_professional" }
+    ]
+  },
+  {
+    "id": 2,
+    "goal": "Decline an invitation politely",
+    "targets": ["Club President", "Close Cousin", "Community Mentor"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "Thank you for inviting me", "register": "formal" },
+      { "text": "I really appreciate it", "register": "polite_professional" },
+      { "text": "I can’t make it", "register": "neutral" },
+      { "text": "this time", "register": "neutral" },
+      { "text": "I already have plans", "register": "neutral" },
+      { "text": "maybe next time", "register": "casual" },
+      { "text": "I’m sorry", "register": "polite_professional" },
+      { "text": "gotta pass", "register": "slang" },
+      { "text": "I hope the event goes well", "register": "formal" },
+      { "text": "let’s catch up soon", "register": "casual" },
+      { "text": "I respectfully decline", "register": "formal" },
+      { "text": "thanks for thinking of me", "register": "polite_professional" }
+    ]
+  },
+  {
+    "id": 3,
+    "goal": "Ask for help with a task",
+    "targets": ["Team Leader", "Roommate", "Library Staff"],
+    "target_registers": ["polite_professional", "casual", "formal"],
+    "fragments": [
+      { "text": "Could you help me", "register": "polite_professional" },
+      { "text": "with this task", "register": "neutral" },
+      { "text": "when you have time", "register": "polite_professional" },
+      { "text": "I’m a bit stuck", "register": "neutral" },
+      { "text": "can you show me", "register": "casual" },
+      { "text": "real quick?", "register": "casual" },
+      { "text": "I would be grateful", "register": "formal" },
+      { "text": "if you could assist me", "register": "formal" },
+      { "text": "no worries if not", "register": "casual" },
+      { "text": "I appreciate your time", "register": "polite_professional" },
+      { "text": "please", "register": "formal" },
+      { "text": "thanks!", "register": "casual" }
+    ]
+  },
+  {
+    "id": 4,
+    "goal": "Give feedback on a project",
+    "targets": ["Senior Manager", "Classmate", "Volunteer Coordinator"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "The structure is clear", "register": "formal" },
+      { "text": "and the main point comes through", "register": "neutral" },
+      { "text": "I suggest", "register": "formal" },
+      { "text": "adding more examples", "register": "formal" },
+      { "text": "this part feels a little rushed", "register": "polite_professional" },
+      { "text": "maybe slow it down", "register": "casual" },
+      { "text": "overall it looks good", "register": "neutral" },
+      { "text": "nice work!", "register": "casual" },
+      { "text": "I appreciate the effort", "register": "polite_professional" },
+      { "text": "consider refining the conclusion", "register": "formal" },
+      { "text": "could be stronger", "register": "polite_professional" },
+      { "text": "keep it up", "register": "casual" }
+    ]
+  },
+  {
+    "id": 5,
+    "goal": "Request a schedule change",
+    "targets": ["Supervisor", "Sibling", "Trainer"],
+    "target_registers": ["polite_professional", "casual", "formal"],
+    "fragments": [
+      { "text": "I would like to request", "register": "formal" },
+      { "text": "a schedule adjustment", "register": "formal" },
+      { "text": "for next week", "register": "neutral" },
+      { "text": "if possible", "register": "polite_professional" },
+      { "text": "can we swap?", "register": "casual" },
+      { "text": "I have a conflict", "register": "neutral" },
+      { "text": "could we move it?", "register": "polite_professional" },
+      { "text": "I’d appreciate your flexibility", "register": "polite_professional" },
+      { "text": "no big deal if not", "register": "casual" },
+      { "text": "thank you for your consideration", "register": "formal" },
+      { "text": "let me know what works", "register": "neutral" },
+      { "text": "I really need this change", "register": "blunt" }
+    ]
+  },
+  {
+    "id": 6,
+    "goal": "Ask for a recommendation",
+    "targets": ["Department Chair", "Older Cousin", "Internship Mentor"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "Would you be willing", "register": "polite_professional" },
+      { "text": "to write a recommendation", "register": "formal" },
+      { "text": "for my application", "register": "formal" },
+      { "text": "I would be honored", "register": "formal" },
+      { "text": "if you could support me", "register": "polite_professional" },
+      { "text": "I learned a lot from you", "register": "polite_professional" },
+      { "text": "can you vouch for me?", "register": "casual" },
+      { "text": "pretty please", "register": "slang" },
+      { "text": "thank you for your time", "register": "formal" },
+      { "text": "it means a lot", "register": "casual" },
+      { "text": "I respect your opinion", "register": "formal" },
+      { "text": "I appreciate your guidance", "register": "polite_professional" }
+    ]
+  },
+  {
+    "id": 7,
+    "goal": "Explain a mistake",
+    "targets": ["Client", "Teammate", "Neighbor"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "I want to clarify", "register": "formal" },
+      { "text": "what went wrong", "register": "neutral" },
+      { "text": "I take responsibility", "register": "formal" },
+      { "text": "for the error", "register": "formal" },
+      { "text": "my bad", "register": "slang" },
+      { "text": "I messed up", "register": "casual" },
+      { "text": "here is what happened", "register": "neutral" },
+      { "text": "I apologize", "register": "polite_professional" },
+      { "text": "and I am fixing it", "register": "polite_professional" },
+      { "text": "thanks for understanding", "register": "casual" },
+      { "text": "please accept my apology", "register": "formal" },
+      { "text": "I appreciate your patience", "register": "polite_professional" }
+    ]
+  },
+  {
+    "id": 8,
+    "goal": "Invite someone to join a group",
+    "targets": ["Department Guest", "Best Friend", "Volunteer Leader"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "We would be delighted", "register": "formal" },
+      { "text": "to have you join us", "register": "formal" },
+      { "text": "for our group", "register": "neutral" },
+      { "text": "this weekend", "register": "neutral" },
+      { "text": "wanna join?", "register": "casual" },
+      { "text": "it’ll be fun", "register": "casual" },
+      { "text": "your participation would be valued", "register": "polite_professional" },
+      { "text": "please consider attending", "register": "formal" },
+      { "text": "we’d love to see you", "register": "casual" },
+      { "text": "let me know if you are interested", "register": "polite_professional" },
+      { "text": "you should totally come", "register": "slang" },
+      { "text": "thank you for considering it", "register": "polite_professional" }
+    ]
+  },
+  {
+    "id": 9,
+    "goal": "Request feedback",
+    "targets": ["Thesis Advisor", "Study Buddy", "Workshop Coach"],
+    "target_registers": ["formal", "casual", "polite_professional"],
+    "fragments": [
+      { "text": "Could you review", "register": "formal" },
+      { "text": "my draft", "register": "neutral" },
+      { "text": "when you have time?", "register": "polite_professional" },
+      { "text": "I value your feedback", "register": "formal" },
+      { "text": "can you take a look?", "register": "casual" },
+      { "text": "be honest", "register": "casual" },
+      { "text": "I would appreciate your insight", "register": "polite_professional" },
+      { "text": "thanks!", "register": "casual" },
+      { "text": "your comments would help a lot", "register": "polite_professional" },
+      { "text": "please be direct", "register": "formal" },
+      { "text": "give it to me straight", "register": "slang" },
+      { "text": "I respect your expertise", "register": "formal" }
+    ]
+  },
+  {
+    "id": 10,
+    "goal": "Negotiate a price",
+    "targets": ["Shop Manager", "Friend", "Marketplace Seller"],
+    "target_registers": ["polite_professional", "casual", "formal"],
+    "fragments": [
+      { "text": "Would you consider", "register": "polite_professional" },
+      { "text": "a slight discount", "register": "formal" },
+      { "text": "on this item", "register": "neutral" },
+      { "text": "if I pay today?", "register": "neutral" },
+      { "text": "can you do better?", "register": "casual" },
+      { "text": "that price is too high", "register": "blunt" },
+      { "text": "I respect your pricing", "register": "formal" },
+      { "text": "maybe we can meet in the middle", "register": "polite_professional" },
+      { "text": "help me out here", "register": "casual" },
+      { "text": "I would appreciate it", "register": "polite_professional" },
+      { "text": "please let me know", "register": "formal" },
+      { "text": "thanks for your time", "register": "formal" }
+    ]
+  }
+]
